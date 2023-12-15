@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Cocktail</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="cocktailDataContainer"></div>
+<button id="getRandomCocktailButton">Get Random Cocktail</button>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const getRandomCocktailButton = document.getElementById('getRandomCocktailButton');
+    const cocktailDataContainer = document.getElementById('cocktailDataContainer');
+
+    getRandomCocktailButton.addEventListener('click', function () {
+      // Send a GET request to "https://www.thecocktaildb.com/api/json/v1/1/random.php" using Axios
+      axios.get('https://www.thecocktaildb.com/api/json/v1/1/random.php')
+        .then(response => {
+          // Update the content of the data container with the received data
+          const cocktailData = response.data.drinks[0];
+          cocktailDataContainer.innerHTML = `
+            <h2>${cocktailData.strDrink}</h2>
+            <img src="${cocktailData.strDrinkThumb}" alt="${cocktailData.strDrink}" style="max-width: 200px;">
+            <p>${cocktailData.strInstructions}</p>
+          `;
+        })
+        .catch(error => {
+          // Handle errors
+          console.error('Error:', error);
+        });
+    });
+  });
+</script>
+
+</body>
+</html>
+
