@@ -1,9 +1,23 @@
-/* .container-carousel {
-    display: flex;
-    justify-content: center;
+ul{
+    text-align: center; 
 }
 
-.carousel-inner {
-    display: flex;
-    justify-content: center;
-} */
+.card-img-top {
+    width: 100%;
+    /* position: absolute; */
+  }
+
+
+  /* Default styles for the top container */
+.container-top {
+    max-width: 100%; /* Set max-width to 100% by default */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+  
+  /* Media query for screens wider than 600px */
+  @media (min-width: 601px) {
+    .container-top {
+      width: 500px; /* Set width to 500px above 500px */
+    }
+  }
+  

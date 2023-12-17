@@ -20,11 +20,25 @@ app.get("/", (req, res) => {
 
 app.get("/get-random", async (req, res) => {
   try {
-    const response = await axios.get(API_URL);
-    const result = response.data;
-    // console.log(result);
-    const cocktailsCarousel = u.make_cocktail(result);
-    res.render("partials/index.ejs", {carouselBody: cocktailsCarousel});
+    const [response1, response2, response3] = await Promise.all([
+      axios.get(API_URL),
+      axios.get(API_URL),
+      axios.get(API_URL)
+    ]);
+  
+    const result1 = response1.data;
+    const result2 = response2.data;
+    const result3 = response3.data;
+    const results =[response1.data, response2.data, response3.data ]
+  
+    // Combine the results as needed
+    var cocktailsCarousel = "";
+
+    for (let i = 0; i < 3; i++) {
+      cocktailsCarousel += u.make_cocktail(results[i], i);
+    }
+
+    res.render("partials/index.ejs", { carouselBody: cocktailsCarousel });
   } catch (error) {
     console.error('Error:', error);
     }
@@ -37,13 +51,13 @@ app.listen(port, () => {
 
 
 const defaultCarousel = `<div class="carousel-item active">
-  < div class="card text-bg-dark" style="width:400px" >
+  <div class="card text-bg-dark mx-auto" style="width:100%" >
     <img class="card-img-top" src="images/bloody-mary.jpg" alt="Card image">
       <div class="card-body">
         <h4 class="card-title">Bloody Mary</h4>
         <h5>Ingredients</h5>
         <p class="card-text">
-          <ul>
+          <ul class="list-unstyled">
             <li>Vodka", 1 1/2 oz</li>
             <li>Tomato juice,3 oz</li>
             <li>Lemon juice, 1 dash ,</li>
@@ -59,13 +73,13 @@ const defaultCarousel = `<div class="carousel-item active">
 </div >
 
 <div class="carousel-item">
-  <div class="card text-bg-dark" style="width:400px">
+  <div class="card text-bg-dark mx-auto" style="width:100%">
     <img class="card-img-top" src="images/pina-colada.jpg" alt="Card image">
     <div class="card-body">
       <h4 class="card-title">Pina Colada</h4>
       <h5>Ingredients</h5>
       <p class="card-text">
-      <ul>
+      <ul class="list-unstyled">
         <li>Light rum, 3 oz </li>
         <li>Coconut milk, 3 tblsp</li>
         <li>"Pineapple, 3 tblsp</li>
@@ -80,13 +94,13 @@ const defaultCarousel = `<div class="carousel-item active">
 </div>
 
 <div class="carousel-item">
-  <div class="card text-bg-dark" style="width:400px">
+  <div class="card text-bg-dark mx-auto" style="width:100%">
     <img class="card-img-top" src="images/mojito.jpg" alt="Card image">
     <div class="card-body">
       <h4 class="card-title">Mojito</h4>
       <h5>Ingredients</h5>
       <p class="card-text">
-      <ul>
+      <ul class="list-unstyled">
         <li>Light rum, 2-3 oz</li>
         <li>Lime, Juice of 1</li>
         <li>Sugar, 2 tsp</li>
