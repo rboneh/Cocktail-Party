@@ -1,7 +1,7 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
-import * as u from "./public/utilities.js";
+import * as u from "./public/utilities.js"; //import app utility functions
 
 const app = express();
 const port = 3000;
@@ -11,30 +11,32 @@ const API_KEY = "1";
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
-
+// Home Page - Default Preloaded Cocktails
 app.get("/", (req, res) => {
   res.render("partials/index.ejs", {carouselBody: defaultCarousel});
 });
 
+// Random Cocktails
 app.get("/get-random", async (req, res) => {
   try {
+    //make 3 requests and get 3 cocktail recipe objects
     const [response1, response2, response3] = await Promise.all([
       axios.get(API_URL),
       axios.get(API_URL),
       axios.get(API_URL)
     ]);
   
+    //combine all objects to 1 array
     const result1 = response1.data;
     const result2 = response2.data;
     const result3 = response3.data;
     const results =[response1.data, response2.data, response3.data ]
   
-    // Combine the results as needed
+    // Make Bootstrap Carousel from the 3 objects
     var cocktailsCarousel = "";
 
     for (let i = 0; i < 3; i++) {
+      //make_cocktail function get cocktail recipe objects and return bootstrap carousel item
       cocktailsCarousel += u.make_cocktail(results[i], i);
     }
 
